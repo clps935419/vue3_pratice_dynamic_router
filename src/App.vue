@@ -1,18 +1,35 @@
 <script>
+import { ref, watch } from '@vue/runtime-core';
+import { useRoute } from 'vue-router';
 export default {
   setup() {
-    return {};
+    const routeArr = ['','about','Courses'];
+    const route = useRoute();
+    const idx =ref(0);
+    watch(() => route.path,(newN,oldN)=>{
+      console.log('---',newN,oldN)
+      routeArr.forEach((item,index)=>{
+        const rp = newN.substr(1).split('/')[0];
+        if(item === rp){
+          console.log('index',index)
+          idx.value =index;
+        }
+      });
+    });
+    return {
+      idx
+    };
   },
 };
 </script>
 
 <template>
   <div id="nav">
-    <router-link to="/"> Home </router-link>
+    <router-link to="/" :class="{active:idx===0}"> Home </router-link>
     |
-    <router-link to="/about"> About </router-link>
+    <router-link to="/about" :class="{active:idx===1}"> About </router-link>
     |
-    <router-link to="/Courses"> courses </router-link>
+    <router-link to="/Courses" :class="{active:idx===2}"> courses </router-link>
 
   </div>
   <router-view />
@@ -48,5 +65,8 @@ body {
       color: #42b983;
     }
   }
+  // .router-link-active{
+  //   color: red;
+  // }
 }
 </style>

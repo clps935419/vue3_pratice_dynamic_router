@@ -14,6 +14,13 @@ export default {
         path:`/courses/${id}`
       })
     }
+    const openNewTab = (id) =>{
+      const saveUrl = router.resolve({
+        path:`/courses/${id}`
+      })
+      console.log('***',saveUrl)
+      window.open(saveUrl.path);
+    }
     onMounted(()=>{
       axios
         .get("https://vue-lessons-api.herokuapp.com/courses/list")
@@ -24,14 +31,15 @@ export default {
     })
     return {
       courses,
-       getUseRouter
+      getUseRouter,
+      openNewTab
     };
   },
 };
 </script>
 <template>
   <div id="courses">
-    <a class="card" v-for="item in courses.data" :key="item.id" @click="getUseRouter(item.id)">
+    <a class="card" v-for="item in courses.data" :key="item.id" @click.left="getUseRouter(item.id)" @click.middle="openNewTab(item.id)">
       <img :src="item.photo" alt="" />
       <div class="content">
         <h1>{{item.name}}</h1>
